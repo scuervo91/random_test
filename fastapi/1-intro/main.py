@@ -1,5 +1,5 @@
 from enum import Enum
-from fastapi import FastAPI 
+from fastapi import FastAPI, Query, Path
 from typing import Optional
 from pydantic import BaseModel
 #predifined items
@@ -68,3 +68,11 @@ async def read_user_item(
 @app.post("/items/{item_id}")
 async def create_item(item: Item, item_id: int):
     return {'item_id':item_id,**item.dict()}
+
+@app.get("/crows/")
+async def get_crow(crow : str = Query(...,min_length=2, max_length=5)):
+    return {'crow':crow}
+
+@app.get("/crows/{crow_id}")
+async def get_crow(crow_id : int = Path(...,ge=3),crow : str = Query(...,min_length=2, max_length=5)):
+    return {'crow_id':crow_id,'crow':crow}
