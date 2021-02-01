@@ -79,6 +79,10 @@ async def get_current_user(token:str = Depends(oauth2_scheme)):
 async def get_user(user : User_Pydantic = Depends(get_current_user)):
     return user
 
+@app.get('/sum/{it_id}', dependencies=[Depends(get_current_user)])
+async def get_sum(it_id : int, value : int):
+    return {'sum':it_id *value}
+    
 register_tortoise(
     app,
     db_url='sqlite://db.sqlite3',
